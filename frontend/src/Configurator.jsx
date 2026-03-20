@@ -85,6 +85,19 @@ function money(value) {
   }).format(value);
 }
 
+function SelectionCard({ title, description, active, onClick }) {
+  return (
+    <button
+      type="button"
+      className={`selection-card ${active ? "active" : ""}`}
+      onClick={onClick}
+    >
+      <span className="selection-title">{title}</span>
+      <span className="selection-description">{description}</span>
+    </button>
+  );
+}
+
 export default function Configurator() {
   const [pane, setPane] = useState("triple");
   const [finish, setFinish] = useState("white");
@@ -120,237 +133,348 @@ export default function Configurator() {
 
   return (
     <section className="configurator-wrap">
-      <div className="configurator-card">
-        <div className="configurator-top">
-          <div>
+      <div className="configurator-shell">
+        <div className="configurator-main">
+          <div className="configurator-intro">
             <p className="configurator-eyebrow">Standard-size pricing tool</p>
-            <h2 className="configurator-title">Window Configurator</h2>
+            <h2 className="configurator-title">Configure Your Window</h2>
             <p className="configurator-subtitle">
-              Configure pane type, finish, size, handing, quantity, connector count,
-              and shipping destination. Insect screens are included. Shipping is built
-              into pricing.
+              Choose your glass package, finish, size, opening direction, and project
+              quantities to see live pricing for standard units. Insect screens are
+              included, and shipping is built into pricing.
             </p>
           </div>
 
-          <div className="configurator-price-card">
-            <div className="configurator-price-label">Estimated price</div>
-            <div className="configurator-price">{money(unitPrice)}</div>
-            <div className="configurator-price-meta">
-              per window · {pane === "triple" ? "Triple Pane" : "Double Pane"} ·{" "}
-              {finishLabels[finish]}
+          <div className="config-step">
+            <div className="step-header">
+              <span className="step-number">01</span>
+              <div>
+                <h3>Choose Performance</h3>
+                <p>Select the glazing package that best fits the project.</p>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div className="configurator-grid">
-          <div className="field-group centered-group">
-            <label>Glass Type</label>
-            <div className="pill-row centered-pills">
-              <button
-                type="button"
-                className={`pill ${pane === "triple" ? "active" : ""}`}
+            <div className="selection-grid two-up">
+              <SelectionCard
+                title="Triple Pane"
+                description="Higher thermal performance for colder climates and more premium projects."
+                active={pane === "triple"}
                 onClick={() => {
                   setPane("triple");
                   if (!pricing.triple[finish][size]) {
                     setSize(Object.keys(pricing.triple[finish])[0]);
                   }
                 }}
-              >
-                Triple Pane
-              </button>
-              <button
-                type="button"
-                className={`pill ${pane === "double" ? "active" : ""}`}
+              />
+              <SelectionCard
+                title="Double Pane"
+                description="A lower-entry option with the same clean European operating style."
+                active={pane === "double"}
                 onClick={() => {
                   setPane("double");
                   if (!pricing.double[finish][size]) {
                     setSize(Object.keys(pricing.double[finish])[0]);
                   }
                 }}
-              >
-                Double Pane
-              </button>
+              />
             </div>
           </div>
 
-          <div className="field-group centered-group">
-            <label>Finish</label>
-            <div className="pill-row centered-pills">
-              {Object.entries(finishLabels).map(([key, label]) => (
-                <button
-                  key={key}
-                  type="button"
-                  className={`pill ${finish === key ? "active" : ""}`}
-                  onClick={() => {
-                    setFinish(key);
-                    if (!pricing[pane][key][size]) {
-                      setSize(Object.keys(pricing[pane][key])[0]);
-                    }
-                  }}
+          <div className="config-step">
+            <div className="step-header">
+              <span className="step-number">02</span>
+              <div>
+                <h3>Choose Finish</h3>
+                <p>Start with the finish that best fits the exterior and interior palette.</p>
+              </div>
+            </div>
+
+            <div className="selection-grid three-up">
+              <SelectionCard
+                title="White"
+                description="Clean, versatile, and broadly compatible with modern and transitional projects."
+                active={finish === "white"}
+                onClick={() => {
+                  setFinish("white");
+                  if (!pricing[pane].white[size]) {
+                    setSize(Object.keys(pricing[pane].white)[0]);
+                  }
+                }}
+              />
+              <SelectionCard
+                title="Black Exterior"
+                description="A stronger architectural look with a darker exterior-facing presence."
+                active={finish === "black"}
+                onClick={() => {
+                  setFinish("black");
+                  if (!pricing[pane].black[size]) {
+                    setSize(Object.keys(pricing[pane].black)[0]);
+                  }
+                }}
+              />
+              <SelectionCard
+                title="Woodgrain"
+                description="A warmer premium presentation for homes needing more natural visual character."
+                active={finish === "wood"}
+                onClick={() => {
+                  setFinish("wood");
+                  if (!pricing[pane].wood[size]) {
+                    setSize(Object.keys(pricing[pane].wood)[0]);
+                  }
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="config-step">
+            <div className="step-header">
+              <span className="step-number">03</span>
+              <div>
+                <h3>Choose Size</h3>
+                <p>Standard-size pricing is shown here. Larger project layouts can be quoted separately.</p>
+              </div>
+            </div>
+
+            <div className="field-row">
+              <div className="field-group">
+                <label htmlFor="size">Standard Size</label>
+                <select
+                  id="size"
+                  value={size}
+                  onChange={(e) => setSize(e.target.value)}
                 >
-                  {label}
-                </button>
-              ))}
+                  {availableSizes.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
 
-          <div className="field-group centered-group">
-            <label htmlFor="size">Size</label>
-            <select
-              id="size"
-              value={size}
-              onChange={(e) => setSize(e.target.value)}
-            >
-              {availableSizes.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </div>
+          <div className="config-step">
+            <div className="step-header">
+              <span className="step-number">04</span>
+              <div>
+                <h3>Choose Opening Direction</h3>
+                <p>Handing should be understood from the exterior view unless otherwise noted.</p>
+              </div>
+            </div>
 
-          <div className="field-group centered-group">
-            <label>Opening Direction</label>
-            <div className="pill-row centered-pills">
+            <div className="selection-grid two-up">
               {Object.entries(handingLabels).map(([key, label]) => (
-                <button
+                <SelectionCard
                   key={key}
-                  type="button"
-                  className={`pill ${handing === key ? "active" : ""}`}
+                  title={label}
+                  description={
+                    key === "RH"
+                      ? "Hinged to open as a right-hand unit when viewed from the exterior."
+                      : "Hinged to open as a left-hand unit when viewed from the exterior."
+                  }
+                  active={handing === key}
                   onClick={() => setHanding(key)}
-                >
-                  {label}
-                </button>
+                />
               ))}
+            </div>
+
+            <div className="handing-guide">
+              <div className="handing-guide-header">
+                <h4>RH / LH Guide</h4>
+                <span>Viewed from exterior</span>
+              </div>
+
+              <div className="handing-visuals">
+                <div className={`handing-visual ${handing === "RH" ? "active" : ""}`}>
+                  <div className="diagram-frame">
+                    <div className="diagram-sash sash-right" />
+                  </div>
+                  <strong>Right Hand</strong>
+                  <p>Use this when the sash opens as a right-hand unit from the exterior view.</p>
+                </div>
+
+                <div className={`handing-visual ${handing === "LH" ? "active" : ""}`}>
+                  <div className="diagram-frame">
+                    <div className="diagram-sash sash-left" />
+                  </div>
+                  <strong>Left Hand</strong>
+                  <p>Use this when the sash opens as a left-hand unit from the exterior view.</p>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="field-group centered-group">
-            <label htmlFor="quantity">Window Quantity</label>
-            <input
-              id="quantity"
-              type="number"
-              min="1"
-              value={quantity}
-              onChange={(e) =>
-                setQuantity(Math.max(1, Number(e.target.value) || 1))
-              }
-            />
+          <div className="config-step">
+            <div className="step-header">
+              <span className="step-number">05</span>
+              <div>
+                <h3>Project Quantities</h3>
+                <p>Adjust quantity and connector count for multi-unit assemblies.</p>
+              </div>
+            </div>
+
+            <div className="field-row two-up-fields">
+              <div className="field-group">
+                <label htmlFor="quantity">Window Quantity</label>
+                <input
+                  id="quantity"
+                  type="number"
+                  min="1"
+                  value={quantity}
+                  onChange={(e) =>
+                    setQuantity(Math.max(1, Number(e.target.value) || 1))
+                  }
+                />
+              </div>
+
+              <div className="field-group">
+                <label htmlFor="connectors">Connector Quantity</label>
+                <input
+                  id="connectors"
+                  type="number"
+                  min="0"
+                  value={connectors}
+                  onChange={(e) =>
+                    setConnectors(Math.max(0, Number(e.target.value) || 0))
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="connector-note">
+              <h4>Connector Guidance</h4>
+              <ul className="clean-list">
+                <li>$20 per connector on smaller orders</li>
+                <li>Free connectors over $5,000 subtotal</li>
+                <li>Useful for wider modular openings using standard-size units</li>
+              </ul>
+            </div>
           </div>
 
-          <div className="field-group centered-group">
-            <label htmlFor="connectors">Connector Quantity</label>
-            <input
-              id="connectors"
-              type="number"
-              min="0"
-              value={connectors}
-              onChange={(e) =>
-                setConnectors(Math.max(0, Number(e.target.value) || 0))
-              }
-            />
-          </div>
+          <div className="config-step">
+            <div className="step-header">
+              <span className="step-number">06</span>
+              <div>
+                <h3>Shipping Destination</h3>
+                <p>Shipping is built into pricing. Estimated tax will be refined before final checkout.</p>
+              </div>
+            </div>
 
-          <div className="field-group field-span-2">
-            <label htmlFor="shippingAddress">Shipping Address</label>
-            <input
-              id="shippingAddress"
-              type="text"
-              placeholder="Street address"
-              value={shippingAddress}
-              onChange={(e) => setShippingAddress(e.target.value)}
-            />
-          </div>
+            <div className="shipping-grid">
+              <div className="field-group field-span-2">
+                <label htmlFor="shippingAddress">Street Address</label>
+                <input
+                  id="shippingAddress"
+                  type="text"
+                  placeholder="Street address"
+                  value={shippingAddress}
+                  onChange={(e) => setShippingAddress(e.target.value)}
+                />
+              </div>
 
-          <div className="field-group">
-            <label htmlFor="shippingCity">City</label>
-            <input
-              id="shippingCity"
-              type="text"
-              placeholder="City"
-              value={shippingCity}
-              onChange={(e) => setShippingCity(e.target.value)}
-            />
-          </div>
+              <div className="field-group">
+                <label htmlFor="shippingCity">City</label>
+                <input
+                  id="shippingCity"
+                  type="text"
+                  placeholder="City"
+                  value={shippingCity}
+                  onChange={(e) => setShippingCity(e.target.value)}
+                />
+              </div>
 
-          <div className="field-group">
-            <label htmlFor="shippingState">State</label>
-            <input
-              id="shippingState"
-              type="text"
-              placeholder="State / Abbreviation"
-              value={shippingState}
-              onChange={(e) => setShippingState(e.target.value)}
-            />
-          </div>
+              <div className="field-group">
+                <label htmlFor="shippingState">State</label>
+                <input
+                  id="shippingState"
+                  type="text"
+                  placeholder="State / Abbreviation"
+                  value={shippingState}
+                  onChange={(e) => setShippingState(e.target.value)}
+                />
+              </div>
 
-          <div className="field-group field-span-2">
-            <label htmlFor="shippingZip">ZIP Code</label>
-            <input
-              id="shippingZip"
-              type="text"
-              placeholder="ZIP Code"
-              value={shippingZip}
-              onChange={(e) => setShippingZip(e.target.value)}
-            />
-            <small>
-              Estimated tax is calculated from the shipping destination and will be finalized at checkout.
-            </small>
+              <div className="field-group field-span-2">
+                <label htmlFor="shippingZip">ZIP Code</label>
+                <input
+                  id="shippingZip"
+                  type="text"
+                  placeholder="ZIP Code"
+                  value={shippingZip}
+                  onChange={(e) => setShippingZip(e.target.value)}
+                />
+                <small>
+                  Estimated tax is shown for planning purposes and will be confirmed
+                  before final payment.
+                </small>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="configurator-lower">
-          <div className="info-card">
-            <h3>Handing Guide</h3>
-            <p>
-              Add RH / LH diagrams or animation here so buyers clearly understand how
-              the unit opens before ordering.
-            </p>
-            <div className="mini-guides">
-              <div className="mini-guide">RH visual</div>
-              <div className="mini-guide">LH visual</div>
-            </div>
-          </div>
-
-          <div className="info-card">
-            <h3>Connector Guidance</h3>
-            <p>
-              Use slim connectors to combine multiple standard windows into one larger
-              visual opening, often at a lower cost than ordering one oversized custom
-              unit.
-            </p>
-            <ul className="clean-list">
-              <li>$20 per connector on smaller orders</li>
-              <li>Free connectors over $5,000 subtotal</li>
-              <li>Great for wider modular assemblies</li>
-            </ul>
-          </div>
-
+        <aside className="summary-panel">
           <div className="summary-card">
-            <h3>Order Summary</h3>
-
-            <div className="summary-row">
-              <span>Window subtotal</span>
-              <strong>{money(windowsSubtotal)}</strong>
+            <div className="summary-top">
+              <div className="summary-label">Estimated unit price</div>
+              <div className="summary-price">{money(unitPrice)}</div>
+              <div className="summary-meta">
+                {pane === "triple" ? "Triple Pane" : "Double Pane"} ·{" "}
+                {finishLabels[finish]} · {size}
+              </div>
             </div>
 
-            <div className="summary-row">
-              <span>Connectors</span>
-              <strong>{money(connectorSubtotal)}</strong>
+            <div className="selection-summary">
+              <div className="summary-row">
+                <span>Glass package</span>
+                <strong>{pane === "triple" ? "Triple Pane" : "Double Pane"}</strong>
+              </div>
+              <div className="summary-row">
+                <span>Finish</span>
+                <strong>{finishLabels[finish]}</strong>
+              </div>
+              <div className="summary-row">
+                <span>Size</span>
+                <strong>{size}</strong>
+              </div>
+              <div className="summary-row">
+                <span>Opening direction</span>
+                <strong>{handingLabels[handing]}</strong>
+              </div>
+              <div className="summary-row">
+                <span>Quantity</span>
+                <strong>{quantity}</strong>
+              </div>
+              <div className="summary-row">
+                <span>Connectors</span>
+                <strong>{connectors}</strong>
+              </div>
             </div>
 
-            <div className="summary-row border-top">
-              <span>Subtotal</span>
-              <strong>{money(orderSubtotal)}</strong>
-            </div>
+            <div className="summary-totals">
+              <div className="summary-row">
+                <span>Window subtotal</span>
+                <strong>{money(windowsSubtotal)}</strong>
+              </div>
 
-            <div className="summary-row">
-              <span>Estimated tax</span>
-              <strong>{money(estimatedTax)}</strong>
-            </div>
+              <div className="summary-row">
+                <span>Connectors</span>
+                <strong>{money(connectorSubtotal)}</strong>
+              </div>
 
-            <div className="summary-note">
-              Final tax and order totals will be confirmed based on the shipping address entered at checkout.
+              <div className="summary-row border-top">
+                <span>Subtotal</span>
+                <strong>{money(orderSubtotal)}</strong>
+              </div>
+
+              <div className="summary-row">
+                <span>Pay-in-full savings</span>
+                <strong>-{money(fullPaySavings)}</strong>
+              </div>
+
+              <div className="summary-row">
+                <span>Estimated tax</span>
+                <strong>{money(estimatedTax)}</strong>
+              </div>
             </div>
 
             <div className="payment-boxes">
@@ -358,7 +482,7 @@ export default function Configurator() {
                 <div className="payment-label">Pay in full</div>
                 <div className="payment-amount">{money(fullPayTotal)}</div>
                 <div className="payment-copy">
-                  A lower total may be available when the full balance is paid upfront.
+                  Includes estimated tax and upfront-payment savings where applicable.
                 </div>
               </div>
 
@@ -366,29 +490,32 @@ export default function Configurator() {
                 <div className="payment-label">50% deposit due now</div>
                 <div className="payment-amount">{money(depositDueNow)}</div>
                 <div className="payment-copy">
-                  Reserve the order now and pay the remaining balance later.
+                  Reserve the order now and complete the remaining balance later.
                 </div>
               </div>
 
               <div className="payment-box">
-                <div className="payment-label">Financing options</div>
+                <div className="payment-label">Project financing</div>
                 <div className="payment-copy">
-                  Financing can be offered for larger projects to help spread out the
-                  cost of multi-window orders.
+                  Financing options can be explored for larger multi-window projects.
                 </div>
               </div>
             </div>
 
+            <div className="summary-note">
+              Final tax, lead time, and order totals will be confirmed before checkout.
+            </div>
+
             <div className="summary-actions">
               <button type="button" className="btn btn-dark">
-                Start Order
+                Start Your Order
               </button>
               <button type="button" className="btn btn-light">
-                Request Quote
+                Request a Project Quote
               </button>
             </div>
           </div>
-        </div>
+        </aside>
       </div>
     </section>
   );
