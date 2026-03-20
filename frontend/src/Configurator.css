@@ -1,0 +1,281 @@
+.configurator-wrap {
+  margin-top: 2rem;
+}
+
+.configurator-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 28px;
+  box-shadow: 0 12px 30px rgba(17, 24, 39, 0.05);
+  padding: 2rem;
+}
+
+.configurator-top {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 1.5rem;
+  align-items: start;
+  margin-bottom: 1.5rem;
+}
+
+.configurator-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 700;
+  margin: 0 0 0.4rem;
+}
+
+.configurator-title {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.configurator-subtitle {
+  color: #4b5563;
+  line-height: 1.7;
+  margin-top: 0.75rem;
+  max-width: 760px;
+}
+
+.configurator-price-card {
+  background: #0f172a;
+  color: white;
+  border-radius: 22px;
+  padding: 1.5rem;
+}
+
+.configurator-price-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.7;
+}
+
+.configurator-price {
+  font-size: 2.3rem;
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+
+.configurator-price-meta {
+  margin-top: 0.35rem;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.5;
+}
+
+.configurator-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.centered-group {
+  align-items: center;
+  text-align: center;
+}
+
+.field-group label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.field-group select,
+.field-group input {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 14px;
+  background: white;
+  padding: 0.9rem 1rem;
+  font-size: 0.95rem;
+  color: #111827;
+}
+
+.field-group small {
+  color: #6b7280;
+  line-height: 1.55;
+}
+
+.field-span-2 {
+  grid-column: span 2;
+}
+
+.pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.centered-pills {
+  justify-content: center;
+}
+
+.pill {
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #111827;
+  border-radius: 999px;
+  padding: 0.75rem 1rem;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.pill:hover {
+  border-color: #9ca3af;
+}
+
+.pill.active {
+  background: #111827;
+  color: white;
+  border-color: #111827;
+}
+
+.configurator-lower {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr;
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+}
+
+.info-card,
+.summary-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 22px;
+  padding: 1.25rem;
+  background: #fafaf9;
+}
+
+.info-card h3,
+.summary-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.65rem;
+  font-size: 1.15rem;
+}
+
+.info-card p,
+.summary-note,
+.payment-copy,
+.clean-list li {
+  color: #4b5563;
+  line-height: 1.7;
+}
+
+.mini-guides {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.mini-guide {
+  min-height: 110px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: white;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.clean-list {
+  padding-left: 1.2rem;
+  margin: 0.8rem 0 0;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.45rem 0;
+  color: #111827;
+}
+
+.summary-row.border-top {
+  border-top: 1px solid #e5e7eb;
+  margin-top: 0.4rem;
+  padding-top: 0.85rem;
+}
+
+.summary-note {
+  margin-top: 0.35rem;
+  font-size: 0.92rem;
+}
+
+.payment-boxes {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1.2rem;
+}
+
+.payment-box {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 1rem;
+}
+
+.payment-primary {
+  border-color: #111827;
+  box-shadow: 0 8px 20px rgba(17, 24, 39, 0.06);
+}
+
+.payment-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.payment-amount {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+
+.summary-actions {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-top: 1.25rem;
+}
+
+@media (max-width: 1100px) {
+  .configurator-top,
+  .configurator-lower {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .configurator-grid,
+  .mini-guides {
+    grid-template-columns: 1fr;
+  }
+
+  .field-span-2 {
+    grid-column: span 1;
+  }
+
+  .configurator-card {
+    padding: 1.25rem;
+  }
+
+  .configurator-title {
+    font-size: 1.6rem;
+  }
+
+  .configurator-price {
+    font-size: 2rem;
+  }
+}
