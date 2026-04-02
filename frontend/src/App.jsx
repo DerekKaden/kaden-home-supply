@@ -1,5 +1,6 @@
 import "./App.css";
 import Configurator from "./Configurator";
+import QuoteForm from "./QuoteForm";
 
 function App() {
   return (
@@ -216,19 +217,25 @@ function App() {
         </section>
 
         <section id="quote" className="section quote-section">
-          <div className="quote-panel">
-            <div>
-              <p className="eyebrow">Next step</p>
-              <h2>Have plans, rough openings, or a larger project?</h2>
-              <p>
-                Request a quote for custom layouts, multi-window assemblies, or projects
-                that need more detailed review before ordering.
-              </p>
+          <div className="quote-layout">
+            <div className="quote-panel">
+              <div>
+                <p className="eyebrow">Custom sizes / project quote</p>
+                <h2>Need a custom size or a larger project quote?</h2>
+                <p>
+          Use the standard-size configurator for common units. For non-standard
+          dimensions, multi-window assemblies, or projects needing review, submit
+          a quote request below.
+                </p>
+                <p>
+          Current custom-size estimates begin at <strong>standard pricing + $300 per unit</strong>,
+          with final pricing confirmed after review.
+                </p>
+              </div>
             </div>
 
-            <div className="hero-actions">
-              <button className="btn btn-dark">Request a Quote</button>
-              <button className="btn btn-light">Upload Plans</button>
+            <div className="quote-form-shell">
+              <QuoteForm />
             </div>
           </div>
         </section>
